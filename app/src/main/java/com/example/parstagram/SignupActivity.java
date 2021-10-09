@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.parse.ParseException;
@@ -21,6 +22,7 @@ public class SignupActivity extends AppCompatActivity {
     EditText etUsername;
     EditText etPassword;
     Button btnSignUp;
+    ProgressBar pbSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,14 +31,15 @@ public class SignupActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnSignUp = findViewById(R.id.btnSignUp);
-
+        pbSignup = findViewById(R.id.pbSignup);
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                pbSignup.setVisibility(ProgressBar.VISIBLE);
                 // Get and validate EditText input
                 String username = etUsername.getText().toString();
-                String password = etUsername.getText().toString();
+                String password = etPassword.getText().toString();
                 // Call createUser() helper function
                 createUser(username, password);
             }
@@ -51,6 +54,7 @@ public class SignupActivity extends AppCompatActivity {
         user.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {
+                pbSignup.setVisibility(ProgressBar.INVISIBLE);
                 if (e != null) {
                     Log.e(TAG, "Error performing sign up", e);
                     Toast.makeText(SignupActivity.this, "Error signing up", Toast.LENGTH_SHORT).show();

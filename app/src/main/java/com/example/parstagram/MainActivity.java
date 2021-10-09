@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnSubmit;
     Button btnLogOut;
     TextView tvUsername;
+    ProgressBar pbPosting;
     private File photoFile;
     public String photoFileName = "photo.jpg";
 
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         btnSubmit = findViewById(R.id.btnSubmit);
         btnLogOut = findViewById(R.id.btnLogOut);
         tvUsername = findViewById(R.id.tvUsername);
+        pbPosting = findViewById(R.id.pbPosting);
 
         currentUser = ParseUser.getCurrentUser();
         tvUsername.setText("Current user: " + currentUser.getUsername());
@@ -87,8 +90,10 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Description can't be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                ParseUser currentUser = ParseUser.getCurrentUser();
+                pbPosting.setVisibility(ProgressBar.VISIBLE);
+                currentUser = ParseUser.getCurrentUser();
                 savePost(description, currentUser, photoFile);
+
             }
         });
     }
@@ -143,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
         post.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
+                // Turn off progress bar once task finishes
+                pbPosting.setVisibility(ProgressBar.INVISIBLE);
                 if (e != null) {
                     Log.e(TAG, "Error while saving", e);
                     Toast.makeText(MainActivity.this, "Error while saving", Toast.LENGTH_SHORT).show();

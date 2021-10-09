@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.parse.LogInCallback;
@@ -22,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText etPassword;
     Button btnLogin;
     Button btnGoToSignUp;
+    ProgressBar pbLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         btnGoToSignUp = findViewById(R.id.btnGoToSignUp);
+        pbLogin = findViewById(R.id.pbLogin);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
@@ -49,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                pbLogin.setVisibility(ProgressBar.VISIBLE);
                 Log.i(TAG, "onClick login button");
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
@@ -64,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         ParseUser.logInInBackground(username, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
+                pbLogin.setVisibility(ProgressBar.INVISIBLE);
                 if (e != null) {
                     Toast.makeText(LoginActivity.this, "Issue with login", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Issue with login", e);
