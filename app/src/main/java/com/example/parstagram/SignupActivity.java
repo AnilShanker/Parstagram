@@ -56,6 +56,9 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(SignupActivity.this, "Error signing up", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                ParseUser.logOut();
+                ParseUser currentUser = ParseUser.getCurrentUser();
+
                 Intent i = new Intent(SignupActivity.this, LoginActivity.class);
                 startActivity(i);
                 finish();
