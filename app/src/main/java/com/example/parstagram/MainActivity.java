@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -37,9 +38,11 @@ public class MainActivity extends AppCompatActivity {
     ImageView ivImage;
     Button btnSubmit;
     Button btnLogOut;
+    TextView tvUsername;
     private File photoFile;
     public String photoFileName = "photo.jpg";
 
+    ParseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
         ivImage = findViewById(R.id.ivImage);
         btnSubmit = findViewById(R.id.btnSubmit);
         btnLogOut = findViewById(R.id.btnLogOut);
+        tvUsername = findViewById(R.id.tvUsername);
+
+        currentUser = ParseUser.getCurrentUser();
+        tvUsername.setText("Current user: " + currentUser.getUsername());
 
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
